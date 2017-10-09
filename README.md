@@ -1,2 +1,2 @@
 # AudioArchivierer
-Tool/ Script zum automatischen archivieren von audio Dateien iklusive Normaliseriung und Konvertierung.
+Tool/ Script zum automatischen archivieren von Audio-Dateien. Optional Normalisierung und Konvertierung.
