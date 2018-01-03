@@ -15,8 +15,8 @@ class AudioArchiver():
       locale.setlocale(locale.LC_TIME, 'deu_deu')
       
       # basePath = "../../BeispielAufnahme/"
-      basePath = "f:/"
-      self.ffmpegPath = "../ffmpeg/bin/ffmpeg.exe"
+      basePath = "m:/"
+      self.ffmpegPath = "C:/ffmpeg-20171218-74f408c-win64-static/bin/ffmpeg.exe"
       
     if sys == 'Linux':
       print("  running on Linux system")
@@ -88,9 +88,13 @@ def main():
         print ("copy result to all found memory sticks")
         audioArchiver.copyToSticks()
         print ("done")
-   
+        print("Press key to quit")
+        os.system("pause")
+	
   except Exception as e:
     print("Oops!  ", e)
+    print("Press key to quit")
+    os.system("pause")
     exit(1)
 
 

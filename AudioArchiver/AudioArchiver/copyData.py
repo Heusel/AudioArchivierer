@@ -68,12 +68,17 @@ def do(arg1):
     # do whatever the script does
 
     #print ('Argument :' + arg1)
+	
+	
+    if not os.path.exists(arg1):
+	    raise ValueError('File %s does not exist' % arg1)
 
     partList = psutil.disk_partitions()
 
     mountList = [];
      
     for partition in partList:
+        #print(partition)
         if partition.opts=='rw,removable':
             mountList.append(partition.mountpoint)
 
@@ -111,3 +116,7 @@ def do(arg1):
             break
         print(x)
     copythread.join()
+
+
+if __name__ == "__main__":
+    do("M:/Gottesdienst_Archiv/2018/Januar/Gottesdienst_03_01_2018.mp3")
