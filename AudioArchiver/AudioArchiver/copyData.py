@@ -71,7 +71,7 @@ def do(arg1):
 	
 	
     if not os.path.exists(arg1):
-	    raise ValueError('File %s does not exist' % arg1)
+        raise ValueError('Datei %s wurde nicht gefunden' % arg1)
 
     partList = psutil.disk_partitions()
 
@@ -82,8 +82,11 @@ def do(arg1):
         if partition.opts=='rw,removable':
             mountList.append(partition.mountpoint)
 
-    print( str(len(mountList)) + ' USB sticks found:')
-            
+    print( str(len(mountList)) + ' USB sticks gefunden:')
+    
+    if len(mountList) == 0:      
+      raise NameError("keine USB-Sticks gefunden")     
+
     #for usbDevice in mountList:
     #    print('   ' + str(usbDevice))
 
@@ -94,8 +97,8 @@ def do(arg1):
     delFiles = ['.mp3']
     
     delthread = FileDelete(q, delFiles, mountList)
-    print('start to delete mp3 files on found memory Sticks')
-    print('this requires some time! Please wait')
+    print('Lösche alte mp3 Dateien auf den USB-Sticks')
+    print('Das kann etwas dauern! Bitte warten')
     delthread.start()
     while True:
         x = q.get()
@@ -107,8 +110,8 @@ def do(arg1):
 
     q = queue.Queue()
     copythread = FileCopy(q, files, mountList)
-    print('start to copy files to found memory Sticks')
-    print('this requires some time! Please wait')
+    print('Beginne mit den kopieren der mp3-Datei aud USB-Sticks')
+    print('Das kann etwas dauern! Bitte warten')
     copythread.start()
     while True:
         x = q.get()
