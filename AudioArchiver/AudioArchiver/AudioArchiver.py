@@ -2,6 +2,7 @@ import os, shutil, time
 import locale, platform
 from subprocess import Popen
 import sys
+import wmi
 import copyData
 import argparse
 import glob 
@@ -10,7 +11,7 @@ import glob
 class AudioArchiver():
   def __init__(self, check=False):
     
-    self.version = "V0.5.2"
+    self.version = "V0.5.3"
     
     print("AudioArchiver: " + self.version)
     print("Suche Dateien")
@@ -23,7 +24,7 @@ class AudioArchiver():
       locale.setlocale(locale.LC_TIME, 'deu_deu')
       
       # basePath = "../../BeispielAufnahme/"
-      basePath = "m:/"
+      basePath = getBasePathWindows()
       self.searchPath = basePath + "AHQU/USBREC//QU-ST*.WAV"
       self.ffmpegPath = "C:/ffmpeg-20171218-74f408c-win64-static/bin/ffmpeg.exe"
       
@@ -54,7 +55,20 @@ class AudioArchiver():
 
     if check == True:
       if not os.path.isfile(self.srcFile):
-        raise NameError("Aufnahme Datei "+ self.srcFile + " wurde nicht gefunden")    
+        raise NameError("Aufnahme Datei "+ self.srcFile + " wurde nicht gefunden")
+
+
+  def getBasePathWindows(self):
+    physicalDrive = next(filter(lambda drive: "WD Elements 25A2 USB Device" in drive.Model, wmi.WMI().Win32_DiskDrive()), None)
+    if(physicalDrive == None):
+	  raise IOError("Festplatte nicht gefunden!")
+
+    partition = physicalDrive.associators("Win32_DiskDriveToDiskPartition")[-1]
+    logicalDrive = partition.associators("Win32_LogicalDiskToPartition")[-1]
+    driveLabel = logicalDrive.Name
+	
+	return driveLabel + '/'
+
 
   def searchForInputFile(self):
     print("  suche nach Aufnahmedateien")
