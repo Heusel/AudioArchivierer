@@ -24,7 +24,7 @@ class AudioArchiver():
       locale.setlocale(locale.LC_TIME, 'deu_deu')
       
       # basePath = "../../BeispielAufnahme/"
-      basePath = getBasePathWindows()
+      basePath = self.getBasePathWindows()
       self.searchPath = basePath + "AHQU/USBREC//QU-ST*.WAV"
       self.ffmpegPath = "C:/ffmpeg-20171218-74f408c-win64-static/bin/ffmpeg.exe"
       
@@ -61,13 +61,13 @@ class AudioArchiver():
   def getBasePathWindows(self):
     physicalDrive = next(filter(lambda drive: "WD Elements 25A2 USB Device" in drive.Model, wmi.WMI().Win32_DiskDrive()), None)
     if(physicalDrive == None):
-	  raise IOError("Festplatte nicht gefunden!")
+      raise IOError("Festplatte nicht gefunden!")
 
     partition = physicalDrive.associators("Win32_DiskDriveToDiskPartition")[-1]
     logicalDrive = partition.associators("Win32_LogicalDiskToPartition")[-1]
     driveLabel = logicalDrive.Name
-	
-	return driveLabel + '/'
+    
+    return driveLabel + '/'
 
 
   def searchForInputFile(self):
